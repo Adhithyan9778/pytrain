@@ -1,0 +1,2 @@
+Hello, this is my Python internship practice.
+Today I am learning backend basics.
