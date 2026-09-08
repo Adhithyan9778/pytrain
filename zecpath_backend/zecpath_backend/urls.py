@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import home
+from core.views import JobListAPIView, UserTestAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home),
+    path('api/jobs/', JobListAPIView.as_view()),
+    path('api/user-test/', UserTestAPIView.as_view()),
 ]
