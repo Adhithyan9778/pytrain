@@ -70,3 +70,20 @@ class ApplicationSerializer(serializers.ModelSerializer):
             'applied_at',
             'updated_at'
         ]
+
+class SignupSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'password', 'phone', 'role']
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+
+        user = User.objects.create_user(
+            password=password,
+            **validated_data
+        )
+
+        return user
