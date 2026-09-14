@@ -39,6 +39,7 @@ class CandidateSerializer(serializers.ModelSerializer):
         ]
 
 
+
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
@@ -55,8 +56,12 @@ class JobSerializer(serializers.ModelSerializer):
             'posted_at',
             'updated_at'
         ]
-
-
+        read_only_fields = [
+            'id',
+            'employer',
+            'posted_at',
+            'updated_at'
+        ]
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
@@ -70,19 +75,27 @@ class ApplicationSerializer(serializers.ModelSerializer):
             'applied_at',
             'updated_at'
         ]
-
 class SignupSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(
+        write_only=True,
+        min_length=8
+    )
 
     class Meta:
         model = User
-        fields = ['name', 'email', 'password', 'phone', 'role']
+        fields = [
+            'name',
+            'email',
+            'password',
+            'phone'
+        ]
 
     def create(self, validated_data):
         password = validated_data.pop('password')
 
         user = User.objects.create_user(
             password=password,
+            role=User.Role.CANDIDATE,
             **validated_data
         )
 

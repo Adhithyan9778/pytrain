@@ -3,12 +3,21 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from .permissions import IsEmployer
 
 from .serializers import JobSerializer, SignupSerializer
 from .services.job_service import get_all_jobs, create_job
 
 
+
+
 class JobListAPIView(APIView):
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsEmployer()]
+
+        return [IsAuthenticated()]
 
     def get(self, request):
         jobs = get_all_jobs()
@@ -20,7 +29,10 @@ class JobListAPIView(APIView):
         )
 
     def post(self, request):
-        job, errors = create_job(request.data)
+        job, errors = create_job(
+            request.data,
+            request.user
+        )
 
         if errors:
             return Response(
@@ -34,7 +46,6 @@ class JobListAPIView(APIView):
             serializer.data,
             status=status.HTTP_201_CREATED
         )
-
 
 class UserTestAPIView(APIView):
     permission_classes = [IsAuthenticated]
