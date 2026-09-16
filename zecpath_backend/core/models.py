@@ -59,13 +59,16 @@ class Employer(models.Model):
     company_name = models.CharField(max_length=100)
     company_description = models.TextField(blank=True)
     website = models.URLField(blank=True)
+    domain = models.CharField(max_length=100, blank=True)
     industry = models.CharField(max_length=100, blank=True)
+    company_size = models.PositiveIntegerField(null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
+    is_verified = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.company_name
-
 
 class Candidate(models.Model):
     user = models.OneToOneField(
@@ -76,8 +79,17 @@ class Candidate(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     bio = models.TextField(blank=True)
     skills = models.TextField(blank=True)
+    education = models.TextField(blank=True)
+    experience = models.TextField(blank=True)
+    expected_salary = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
     resume = models.FileField(upload_to="resumes/", blank=True)
     location = models.CharField(max_length=100, blank=True)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

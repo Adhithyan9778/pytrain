@@ -13,20 +13,19 @@ class IsAdmin(BasePermission):
 
 
 class IsEmployer(BasePermission):
-    message = "Only employers can access this resource."
+    message = "Only employers or admins can access this resource."
 
     def has_permission(self, request, view):
         return (
             request.user.is_authenticated
-            and request.user.role == "EMPLOYER"
+            and request.user.role in ["EMPLOYER", "ADMIN"]
         )
 
-
 class IsCandidate(BasePermission):
-    message = "Only candidates can access this resource."
+    message = "Only candidates or admins can access this resource."
 
     def has_permission(self, request, view):
         return (
             request.user.is_authenticated
-            and request.user.role == "CANDIDATE"
+            and request.user.role in ["CANDIDATE", "ADMIN"]
         )

@@ -18,11 +18,29 @@ class EmployerSerializer(serializers.ModelSerializer):
             'company_name',
             'company_description',
             'website',
+            'domain',
             'industry',
+            'company_size',
             'location',
+            'is_verified',
+            'is_deleted',
+            'created_at'
+        ]
+        read_only_fields = [
+            'id',
+            'user',
+            'is_verified',
+            'is_deleted',
             'created_at'
         ]
 
+    def validate_company_size(self, value):
+        if value is not None and value <= 0:
+            raise serializers.ValidationError(
+                "Company size must be greater than 0."
+            )
+
+        return value
 
 class CandidateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,13 +51,28 @@ class CandidateSerializer(serializers.ModelSerializer):
             'phone',
             'bio',
             'skills',
+            'education',
+            'experience',
+            'expected_salary',
             'resume',
             'location',
+            'is_deleted',
+            'created_at'
+        ]
+        read_only_fields = [
+            'id',
+            'user',
+            'is_deleted',
             'created_at'
         ]
 
+    def validate_expected_salary(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError(
+                "Expected salary cannot be negative."
+            )
 
-
+        return value
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job

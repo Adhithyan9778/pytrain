@@ -5,6 +5,8 @@ from core.views import (
     UserTestAPIView,
     SignupAPIView,
     LogoutAPIView,
+    CandidateProfileAPIView,
+    EmployerProfileAPIView,
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -22,4 +24,15 @@ urlpatterns = [
 
     path('api/signup/', SignupAPIView.as_view(), name='signup'),
     path('api/logout/', LogoutAPIView.as_view(), name='logout'),
+
+    path(
+    'api/candidate/profile/',
+    CandidateProfileAPIView.as_view(),
+    name='candidate-profile'
+),
+path(
+    'api/employer/profile/',
+    EmployerProfileAPIView.as_view(),
+    name='employer-profile'
+),
 ]
